@@ -1,0 +1,35 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    apply from: "versions.gradle"
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        jcenter()
+    }
+    dependencies {
+        // https://stackoverflow.com/questions/67890567/unable-to-find-method-void-com-android-build-api-extension-androidcomponentsex
+        // https://stackoverflow.com/questions/68152879/unrecognized-android-studio-or-android-support-plugin-for-intellij-idea-error
+        // Надо работать в Android Studio из канала Canary
+        classpath 'com.android.tools.build:gradle:7.0.0-rc01'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+
+        // https://jdvp.me/articles/Switching-AspectJ-Plugins-Android
+        classpath 'com.ibotta:plugin:1.1.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
