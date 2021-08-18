@@ -21,14 +21,14 @@ import ru.skillbranch.sbdelivery.screens.cart.data.ConfirmDialogState
 @Composable
 fun CartScreen(state: CartFeature.State, accept: (CartFeature.Msg) -> Unit) {
     Log.w(LogAspect.tag, ">>>--------CartScreen() Params: [state = $state]")
-    when (state.uiState) {
-        is CartUiState.Things -> {
+    when (state.list) {
+        is CartUiState.Value -> {
             Column {
                 LazyColumn(
                     contentPadding = PaddingValues(0.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     content = {
-                        val items = state.uiState.dishes
+                        val items = state.list.dishes
                         items(items = items, key = { it.id }) {
                             CartListItem(
                                 dish = it,
@@ -59,7 +59,7 @@ fun CartScreen(state: CartFeature.State, accept: (CartFeature.Msg) -> Unit) {
                     verticalArrangement = Arrangement.Bottom
                 ) {
                     Row {
-                        val total = state.uiState.dishes.sumOf { it.count * it.price }
+                        val total = state.list.dishes.sumOf { it.count * it.price }
                         Text(
                             "Итого",
                             fontSize = 24.sp,
@@ -80,7 +80,7 @@ fun CartScreen(state: CartFeature.State, accept: (CartFeature.Msg) -> Unit) {
                     Button(
                         onClick = {
                             val order = mutableMapOf<String, Int>()
-                            state.uiState.dishes.forEach { dish ->
+                            state.list.dishes.forEach { dish ->
                                 order[dish.id] = dish.count
                             }
                             accept(CartFeature.Msg.SendOrder(order))
@@ -136,7 +136,7 @@ fun CartScreen(state: CartFeature.State, accept: (CartFeature.Msg) -> Unit) {
                     TextButton(
                         onClick = {
                             accept(CartFeature.Msg.RemoveFromCart(
-                                state.confirmDialog.id, state.confirmDialog.title))
+                                state.confirmDialog.id))
                         },
                         modifier = Modifier.weight(1f)
                     ) {

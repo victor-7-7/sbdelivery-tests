@@ -4,5 +4,5 @@ import java.io.Serializable
 
 sealed class DishUiState : Serializable {
     object Loading : DishUiState()
-    data class Thing(val dishContent: DishContent) : DishUiState()
+    data class Value(val dishContent: DishContent) : DishUiState()
 }

@@ -33,7 +33,7 @@ fun DishReviews(reviews: ReviewUiState, rating: Float, accept: (DishFeature.Msg)
             CircularProgressIndicator(color = MaterialTheme.colors.secondary)
         }
 
-        is ReviewUiState.Content -> Reviews(
+        is ReviewUiState.Value -> Reviews(
             reviews = reviews.list,
             rating = rating,
             onAddReview = { accept(DishFeature.Msg.ShowReviewDialog) },

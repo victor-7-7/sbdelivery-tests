@@ -16,7 +16,7 @@ interface ICartRepository {
     suspend fun clearCart()
 }
 
-@LogClassMethods
+
 class CartRepository @Inject constructor(
     private val api: RestService,
     private val cartDao: CartDao

@@ -4,19 +4,18 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import ru.skillbranch.sbdelivery.aop.LogClassMethods
 import ru.skillbranch.sbdelivery.repository.DishRepository
-import ru.skillbranch.sbdelivery.screens.dishes.logic.DishesFeature
 import ru.skillbranch.sbdelivery.screens.root.logic.Eff
-import ru.skillbranch.sbdelivery.screens.root.logic.IEffHandler
+import ru.skillbranch.sbdelivery.screens.root.logic.IEffectHandler
 import ru.skillbranch.sbdelivery.screens.root.logic.Msg
 import javax.inject.Inject
 
-@LogClassMethods
-class DishEffHandler @Inject constructor(
+
+class DishEffectHandler @Inject constructor(
     private val repository: DishRepository,
     private val notifyChannel: Channel<Eff.Notification>,
     private val dispatcher: CoroutineDispatcher  = Dispatchers.Default
 ) :
-    IEffHandler<DishFeature.Eff, Msg> {
+    IEffectHandler<DishFeature.Eff, Msg> {
 
     private var localJob: Job? = null
 
@@ -54,12 +53,31 @@ class DishEffHandler @Inject constructor(
                 }
 
                 is DishFeature.Eff.SendReview -> {
-                    val reviewRes = repository.sendReview(effect.id, effect.rating, effect.review)
-                    notifyChannel.send(
-                        Eff.Notification.Text(
-                            message = "Отзыв успешно отправлен\n$reviewRes"
+                    try {
+                        val reviewRes = repository.sendReview(effect.id, effect.rating, effect.review)
+                        val reviews = repository.loadReviews(effect.id)
+                        // Если реального ответа сервера не было (это песочница)
+                        if (reviewRes.name == "stubName") {
+                            val stubReviews = reviews.toMutableList()
+                            stubReviews.add(reviewRes)
+                            commit(DishFeature.Msg.ShowReviews(stubReviews).toMsg())
+
+                        } else commit(DishFeature.Msg.ShowReviews(reviews).toMsg())
+                        //------ Вариант с единственным обращением к серверу ---------
+                        // Дополнить класс-эффект четвертым свойством currReviews. В редьюсере
+                        // задать ему значение - взять из стейт-свойства reviews (текущий список
+                        // сидит в виде свойства list в классе ReviewUiState.Content). Теперь
+                        // здесь добавить к текущему списку отзывов полученный с сервера отзыв
+                        // reviewRes и обновленный список закоммитить мессиджем ShowReviews
+                        //------------------------------------------------------------
+                        notifyChannel.send(
+                            Eff.Notification.Text(
+                                message = "Отзыв успешно отправлен"
+                            )
                         )
-                    )
+                    } catch (t: Throwable) {
+                        notifyChannel.send(Eff.Notification.Error(t.message ?: "something error"))
+                    }
                 }
 
                 is DishFeature.Eff.Terminate -> {

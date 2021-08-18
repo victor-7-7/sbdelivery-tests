@@ -12,15 +12,15 @@ import ru.skillbranch.sbdelivery.screens.root.logic.ScreenState
 fun DishesFeature.State.selfReduce(msg: DishesFeature.Msg): Pair<DishesFeature.State, Set<Eff>> {
     Log.v(LogAspect.tag, ">>>--------DishesFeature.State.selfReduce()")
     val pair = when (msg) {
-        is DishesFeature.Msg.AddToCart -> this to setOf(
-            DishesFeature.Eff.AddToCart(
+        is DishesFeature.Msg.AddToCard -> this to setOf(
+            DishesFeature.Eff.AddToCard(
                 msg.id,
                 msg.title
             )
         ).toEffs()
 
-        is DishesFeature.Msg.RemoveFromCart -> this to setOf(
-            DishesFeature.Eff.RemoveFromCart(
+        is DishesFeature.Msg.RemoveFromCard -> this to setOf(
+            DishesFeature.Eff.RemoveFromCard(
                 msg.id,
                 msg.title
             )
@@ -36,7 +36,7 @@ fun DishesFeature.State.selfReduce(msg: DishesFeature.Msg): Pair<DishesFeature.S
 
         is DishesFeature.Msg.SearchInput -> copy(input = msg.newInput) to emptySet()
 
-        is DishesFeature.Msg.SearchSubmit -> copy(uiState = DishesUiState.Loading) to setOf(
+        is DishesFeature.Msg.SearchSubmit -> copy(list = DishesUiState.Loading) to setOf(
             DishesFeature.Eff.SearchDishes(msg.query)
         ).toEffs()
 
@@ -49,11 +49,11 @@ fun DishesFeature.State.selfReduce(msg: DishesFeature.Msg): Pair<DishesFeature.S
 
         is DishesFeature.Msg.ShowDishes -> {
             val dishes =
-                if (msg.dishes.isEmpty()) DishesUiState.Empty else DishesUiState.Things(msg.dishes)
-            copy(uiState = dishes, suggestions = emptyMap()) to emptySet()
+                if (msg.dishes.isEmpty()) DishesUiState.Empty else DishesUiState.Value(msg.dishes)
+            copy(list = dishes, suggestions = emptyMap()) to emptySet()
         }
         is DishesFeature.Msg.ShowError -> TODO()
-        is DishesFeature.Msg.ShowLoading -> copy(uiState = DishesUiState.Loading) to emptySet()
+        is DishesFeature.Msg.ShowLoading -> copy(list = DishesUiState.Loading) to emptySet()
         is DishesFeature.Msg.ShowSuggestions -> copy(suggestions = msg.suggestions) to emptySet()
 
         is DishesFeature.Msg.SuggestionSelect -> {

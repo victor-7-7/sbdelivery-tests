@@ -7,7 +7,7 @@ import ru.skillbranch.sbdelivery.screens.dish.data.DishUiState
 import ru.skillbranch.sbdelivery.screens.dish.data.ReviewUiState
 import java.io.Serializable
 
-@LogClassMethods
+
 object DishFeature {
     const val route = "dish"
 

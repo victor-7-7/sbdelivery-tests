@@ -5,16 +5,16 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import ru.skillbranch.sbdelivery.aop.LogClassMethods
 import ru.skillbranch.sbdelivery.repository.RootRepository
-import ru.skillbranch.sbdelivery.screens.cart.logic.CartEffHandler
-import ru.skillbranch.sbdelivery.screens.dish.logic.DishEffHandler
-import ru.skillbranch.sbdelivery.screens.dishes.logic.DishesEffHandler
+import ru.skillbranch.sbdelivery.screens.cart.logic.CartEffectHandler
+import ru.skillbranch.sbdelivery.screens.dish.logic.DishEffectHandler
+import ru.skillbranch.sbdelivery.screens.dishes.logic.DishesEffectHandler
 import javax.inject.Inject
 
-@LogClassMethods
+
 class EffDispatcher @Inject constructor(
-    private val dishesHandler: DishesEffHandler,
-    private val dishHandler: DishEffHandler,
-    private val cartHandler: CartEffHandler,
+    private val dishesHandler: DishesEffectHandler,
+    private val dishHandler: DishEffectHandler,
+    private val cartHandler: CartEffectHandler,
 
     private val rootRepository : RootRepository,
 
@@ -22,7 +22,7 @@ class EffDispatcher @Inject constructor(
     private val _notifyChannel: Channel<Eff.Notification>,
     private val _commandChannel: Channel<Command>
 
-) : IEffHandler<Eff, Msg> {
+) : IEffectHandler<Eff, Msg> {
     // fan-out => развёртываться как веер
     // receiveAsFlow -> Represents the given receive channel as a hot flow and
     // receives from the channel in fan-out fashion every time this flow is
@@ -60,7 +60,7 @@ class EffDispatcher @Inject constructor(
     }
 }
 
-@LogClassMethods
-interface IEffHandler<E, M> {
+
+interface IEffectHandler<E, M> {
     suspend fun handle(effect: E, commit: (M) -> Unit)
 }

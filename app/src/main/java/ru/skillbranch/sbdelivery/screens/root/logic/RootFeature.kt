@@ -14,7 +14,7 @@ import ru.skillbranch.sbdelivery.screens.dishes.logic.DishesFeature
 import ru.skillbranch.sbdelivery.screens.dishes.logic.reduce
 import java.io.Serializable
 
-@LogClassMethods
+
 object RootFeature {
 
     // Функция вызывается только при запуске приложения в двух местах.
@@ -76,9 +76,9 @@ object RootFeature {
      * эффектов для дальнейшей обработки. Вторым параметром в диспетчер передается (под
      * именем commit) ссылка на функцию mutate(msg) */
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun listen(scope: CoroutineScope, effDispatcher: IEffHandler<Eff, Msg>, initState: RootState?) {
+    fun listen(scope: CoroutineScope, effDispatcher: IEffectHandler<Eff, Msg>, initState: RootState?) {
         Log.e("RootFeature", "Start listen init state: $initState")
-        _scope = scope
+        _scope = scope // Теперь _scope ссылается на viewModelScope
         _scope.launch {
             mutations.onEach { Log.e("DemoEffHandler", "MUTATION $it") }
                 // fun <T, R> Flow<T>.scan(initial: R, operation: suspend (R, T) -> R): Flow<R>
@@ -91,7 +91,8 @@ object RootFeature {
                 // двух эффектов - SyncDishes и SyncCounter. Эта начальная пара будет
                 // проэмичена в коллектор. Затем в коллектор будут эмитится пары, являющиеся
                 // результатом свертки (в функции reduceDispatcher) текущей (проэмиченой
-                // до того) пары и очередного мессиджа
+                // до того) пары (стейт/эффект) и очередного мессиджа с возвратом из свертки
+                // новой пары - стейт/эффект
                 .scan((initState ?: initialState()) to initialEffects()) { (s, _), m ->
                     // При запуске приложения s = RootState(..., currentRoute=dishes,
                     // backstack=[], cartCount=0), а m = Dishes(msg=ShowDishes(dishes=
@@ -139,7 +140,7 @@ object RootFeature {
         }
 }
 
-@LogClassMethods
+
 data class RootState(
     val screens: Map<String, ScreenState>,
     val currentRoute: String,
@@ -177,7 +178,6 @@ data class RootState(
 /** Базовый скринстейт имеет только два String-свойства - route (название экрана)
  * и title (для заголовка аппбара). Производные скринстейты имеют у себя дополнительное
  * свойство - стейт соответствующего типа (DishesFeature.State и т.д) */
-@LogClassMethods
 sealed class ScreenState(
     val route: String,
     val title: String
@@ -192,7 +192,7 @@ sealed class ScreenState(
         ScreenState(CartFeature.route, "Корзина")
 }
 
-@LogClassMethods
+
 sealed class Msg {
     data class Dishes(val msg: DishesFeature.Msg) : Msg()
     data class Dish(val msg: DishFeature.Msg) : Msg()
@@ -205,7 +205,7 @@ sealed class Msg {
     data class UpdateCartCount(val count: Int) : Msg()
 }
 
-@LogClassMethods
+
 sealed class Eff {
     data class Dishes(val eff: DishesFeature.Eff) : Eff()
     data class Dish(val eff: DishFeature.Eff) : Eff()
@@ -230,14 +230,12 @@ sealed class Eff {
     data class Cmd(val cmd: Command) : Eff()
 }
 
-@LogClassMethods
 sealed class NavigateCommand {
     data class ToDishItem(val id: String, val title: String) : NavigateCommand()
     object ToCart : NavigateCommand()
     object ToBack : NavigateCommand()
 }
 
-@LogClassMethods
 sealed class Command {
     object Finish : Command()
     //Android specific commands Activity::finish(), startForResult, etc

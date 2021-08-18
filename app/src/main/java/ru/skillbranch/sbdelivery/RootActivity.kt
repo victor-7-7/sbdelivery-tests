@@ -15,7 +15,6 @@ import ru.skillbranch.sbdelivery.screens.root.logic.NavigateCommand
 import ru.skillbranch.sbdelivery.screens.root.ui.AppTheme
 import ru.skillbranch.sbdelivery.screens.root.ui.RootScreen
 
-@LogClassMethods
 @AndroidEntryPoint
 class RootActivity : AppCompatActivity() {
     private val vm : RootViewModel by viewModels()

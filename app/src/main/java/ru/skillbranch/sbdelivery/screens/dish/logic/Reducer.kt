@@ -19,9 +19,9 @@ fun DishFeature.State.selfReduce(msg: DishFeature.Msg) : Pair<DishFeature.State,
         is DishFeature.Msg.IncrementCount -> copy(count = count + 1) to emptySet<Eff>()
         is DishFeature.Msg.SendReview -> copy(isReviewDialog = false) to
                 setOf(DishFeature.Eff.SendReview(msg.dishId, msg.rating, msg.review)).toEffs()
-        is DishFeature.Msg.ShowDish -> copy(content = DishUiState.Thing(msg.dish)) to emptySet<Eff>()
+        is DishFeature.Msg.ShowDish -> copy(content = DishUiState.Value(msg.dish)) to emptySet<Eff>()
         is DishFeature.Msg.ShowReviewDialog -> copy(isReviewDialog = true) to emptySet<Eff>()
-        is DishFeature.Msg.ShowReviews -> copy(reviews = ReviewUiState.Content(msg.reviews)) to emptySet<Eff>()
+        is DishFeature.Msg.ShowReviews -> copy(reviews = ReviewUiState.Value(msg.reviews)) to emptySet<Eff>()
         // По хорошему тут еще надо добавить эффект ToggleLike, а в хендлере эффектов
         // записать в БД девайса, что данное блюдо лайкнуто владельцем девайса
         is DishFeature.Msg.ToggleLike -> copy(isLiked = !isLiked) to emptySet<Eff>()

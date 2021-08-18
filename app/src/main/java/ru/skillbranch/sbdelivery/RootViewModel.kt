@@ -9,7 +9,6 @@ import ru.skillbranch.sbdelivery.aop.LogClassMethods
 import ru.skillbranch.sbdelivery.screens.root.logic.*
 import javax.inject.Inject
 
-@LogClassMethods
 @HiltViewModel
 class RootViewModel @Inject constructor(
     private val savedState : SavedStateHandle,

@@ -6,16 +6,16 @@ import kotlinx.coroutines.channels.Channel
 import ru.skillbranch.sbdelivery.aop.LogClassMethods
 import ru.skillbranch.sbdelivery.repository.CartRepository
 import ru.skillbranch.sbdelivery.screens.root.logic.Eff
-import ru.skillbranch.sbdelivery.screens.root.logic.IEffHandler
+import ru.skillbranch.sbdelivery.screens.root.logic.IEffectHandler
 import ru.skillbranch.sbdelivery.screens.root.logic.Msg
 import javax.inject.Inject
 
-@LogClassMethods
-class CartEffHandler @Inject constructor(
+
+class CartEffectHandler @Inject constructor(
     private val repository: CartRepository,
     private val notifyChannel: Channel<Eff.Notification>,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-) : IEffHandler<CartFeature.Eff, Msg> {
+) : IEffectHandler<CartFeature.Eff, Msg> {
 
     override suspend fun handle(effect: CartFeature.Eff, commit: (Msg) -> Unit) {
 
@@ -43,6 +43,8 @@ class CartEffHandler @Inject constructor(
                 // Юзер уже подтвердил удаление товара из корзины
                 repository.removeItem(effect.id)
                 updateCart()
+                // Это помимо заданий, мое добавление
+                notifyChannel.send(Eff.Notification.Text("${effect.title} удален из корзины"))
             }
             is CartFeature.Eff.SendOrder -> {
                 repository.clearCart()

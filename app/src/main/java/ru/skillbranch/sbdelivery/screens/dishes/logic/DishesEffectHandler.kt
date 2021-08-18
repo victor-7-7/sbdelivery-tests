@@ -7,20 +7,20 @@ import kotlinx.coroutines.delay
 import ru.skillbranch.sbdelivery.aop.LogClassMethods
 import ru.skillbranch.sbdelivery.repository.DishesRepository
 import ru.skillbranch.sbdelivery.screens.root.logic.Eff
-import ru.skillbranch.sbdelivery.screens.root.logic.IEffHandler
+import ru.skillbranch.sbdelivery.screens.root.logic.IEffectHandler
 import ru.skillbranch.sbdelivery.screens.root.logic.Msg
 import javax.inject.Inject
 
-@LogClassMethods
-class DishesEffHandler @Inject constructor(
+
+class DishesEffectHandler @Inject constructor(
     private val repository: DishesRepository,
     private val notifyChannel: Channel<Eff.Notification>,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-) : IEffHandler<DishesFeature.Eff, Msg> {
+) : IEffectHandler<DishesFeature.Eff, Msg> {
 
     override suspend fun handle(effect: DishesFeature.Eff, commit: (Msg) -> Unit) {
         when (effect) {
-            is DishesFeature.Eff.AddToCart -> {
+            is DishesFeature.Eff.AddToCard -> {
                 repository.addDishToCart(effect.id)
                 val count = repository.cartCount()
                 commit(Msg.UpdateCartCount(count))
@@ -29,7 +29,7 @@ class DishesEffHandler @Inject constructor(
                         message = "${effect.title} успешно добавлен в корзину",
                         label = "Отмена",
                         action = Msg.Dishes(
-                            DishesFeature.Msg.RemoveFromCart(
+                            DishesFeature.Msg.RemoveFromCard(
                                 effect.id,
                                 effect.title
                             )
@@ -38,7 +38,7 @@ class DishesEffHandler @Inject constructor(
                 )
             }
 
-            is DishesFeature.Eff.RemoveFromCart -> {
+            is DishesFeature.Eff.RemoveFromCard -> {
                 repository.decrementOrRemoveDishFromCart(effect.id)
                 val count = repository.cartCount()
                 commit(Msg.UpdateCartCount(count))

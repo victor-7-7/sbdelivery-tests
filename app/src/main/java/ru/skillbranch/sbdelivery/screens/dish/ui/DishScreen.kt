@@ -34,7 +34,7 @@ import ru.skillbranch.sbdelivery.aop.LogAspect
 fun DishScreen(state: DishFeature.State, accept: (DishFeature.Msg) -> Unit) {
     Log.w(LogAspect.tag, ">>>--------DishScreen() Params: [state = $state]")
     when (state.content) {
-        is DishUiState.Thing -> {
+        is DishUiState.Value -> {
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 DishContent(dish = state.content.dishContent, count = state.count,
                     isLiked = state.isLiked, accept = accept)

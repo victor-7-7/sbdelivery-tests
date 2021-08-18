@@ -5,7 +5,7 @@ import ru.skillbranch.sbdelivery.data.db.dao.CartDao
 import ru.skillbranch.sbdelivery.data.db.dao.DishesDao
 import ru.skillbranch.sbdelivery.data.db.entity.CartItemPersist
 import ru.skillbranch.sbdelivery.data.network.RestService
-import ru.skillbranch.sbdelivery.data.network.res.ReviewReq
+import ru.skillbranch.sbdelivery.data.network.req.ReviewReq
 import ru.skillbranch.sbdelivery.data.network.res.ReviewRes
 import ru.skillbranch.sbdelivery.data.toDishContent
 import ru.skillbranch.sbdelivery.screens.dish.data.DishContent
@@ -20,7 +20,7 @@ interface IDishRepository {
     suspend fun sendReview(id: String, rating: Int, review: String): ReviewRes
 }
 
-@LogClassMethods
+
 class DishRepository @Inject constructor(
     private val api: RestService,
     private val dishesDao: DishesDao,
@@ -59,13 +59,10 @@ class DishRepository @Inject constructor(
     }
 
     override suspend fun sendReview(id: String, rating: Int, review: String): ReviewRes {
-        /* TODO: получить имя отправителя [а как в тестах?] ? */
-        val reviewResStub = ReviewRes("xxx", Date().time, rating, review)
         return try {
-            /* TODO: откуда взять токен ? */
-            api.sendReview(id, ReviewReq(Date().time, rating, review), "token")
+            api.sendReview(id, ReviewReq(rating, review))
         } catch (e: Exception) {
-            reviewResStub
+            ReviewRes("stubName", Date().time, rating, review)
         }
     }
 

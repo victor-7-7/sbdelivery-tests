@@ -23,7 +23,7 @@ interface IDishesRepository {
     suspend fun cartCount(): Int
 }
 
-@LogClassMethods
+
 class DishesRepository @Inject constructor(
     private val api: RestService,
     private val dishesDao: DishesDao,

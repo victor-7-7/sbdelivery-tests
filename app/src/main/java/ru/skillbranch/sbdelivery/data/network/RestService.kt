@@ -2,6 +2,7 @@ package ru.skillbranch.sbdelivery.data.network
 
 import retrofit2.Response
 import retrofit2.http.*
+import ru.skillbranch.sbdelivery.data.network.req.ReviewReq
 import ru.skillbranch.sbdelivery.data.network.res.*
 
 interface RestService {
@@ -27,8 +28,7 @@ interface RestService {
     @POST("dishes/{dishId}/reviews")  // ???????????
     suspend fun sendReview(
         @Path("dishId") dishId: String,
-        @Body review: ReviewReq,
-        @Header("Authorization") token: String
+        @Body review: ReviewReq
     ): ReviewRes
 
     @GET("categories")

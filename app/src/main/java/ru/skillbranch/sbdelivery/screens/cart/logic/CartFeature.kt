@@ -6,7 +6,7 @@ import ru.skillbranch.sbdelivery.screens.cart.data.CartUiState
 import ru.skillbranch.sbdelivery.screens.cart.data.ConfirmDialogState
 import java.io.Serializable
 
-@LogClassMethods
+
 object CartFeature {
 
     const val route = "cart"
@@ -17,7 +17,7 @@ object CartFeature {
     data class State(
         val promo: String = "",
         val confirmDialog: ConfirmDialogState = ConfirmDialogState.Hide,
-        val uiState: CartUiState = CartUiState.Empty
+        val list: CartUiState = CartUiState.Empty
     ): Serializable
 
     sealed class Eff {
@@ -36,7 +36,7 @@ object CartFeature {
         data class IncrementCount(val dishId:String) : Msg()
         data class DecrementCount(val dishId:String) : Msg()
         data class ShowCart(val cart: List<CartItem>) : Msg()
-        data class RemoveFromCart(val id: String, val title:String) :Msg()
+        data class RemoveFromCart(val id: String) :Msg()
         data class ClickOnDish(val dishId: String, val title: String) :Msg()
     }
 }

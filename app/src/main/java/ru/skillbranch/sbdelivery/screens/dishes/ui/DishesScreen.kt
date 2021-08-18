@@ -20,7 +20,7 @@ import ru.skillbranch.sbdelivery.screens.dishes.logic.DishesFeature
 @Composable
 fun DishesScreen(state: DishesFeature.State, accept: (DishesFeature.Msg) -> Unit) {
     Log.w(LogAspect.tag, ">>>--------DishesScreen() Params: [state = $state]".doMoreClean())
-    when (state.uiState) {
+    when (state.list) {
         is DishesUiState.Error -> TODO()
 
         is DishesUiState.Empty -> Box(
@@ -46,11 +46,11 @@ fun DishesScreen(state: DishesFeature.State, accept: (DishesFeature.Msg) -> Unit
             CircularProgressIndicator(color = MaterialTheme.colors.secondary)
         }
 
-        is DishesUiState.Things -> LazyGrid(items = state.uiState.dishes) {
+        is DishesUiState.Value -> LazyGrid(items = state.list.dishes) {
             DishItem(
                 dish = it,
                 onClick = { dish -> accept(DishesFeature.Msg.ClickDish(dish.id, dish.title)) },
-                addToCart = { dish -> accept(DishesFeature.Msg.AddToCart(dish.id, dish.title)) }
+                addToCart = { dish -> accept(DishesFeature.Msg.AddToCard(dish.id, dish.title)) }
             )
         }
     }

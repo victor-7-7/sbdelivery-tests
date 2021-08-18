@@ -8,7 +8,7 @@ interface IRootRepository {
     suspend fun cartCount(): Int
 }
 
-@LogClassMethods
+
 class RootRepository @Inject constructor(
     private val cartDao: CartDao
 ) : IRootRepository{
