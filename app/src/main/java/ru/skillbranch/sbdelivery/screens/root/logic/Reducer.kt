@@ -1,13 +1,10 @@
 package ru.skillbranch.sbdelivery.screens.root.logic
 
 import android.util.Log
-import ru.skillbranch.sbdelivery.aop.LogAspect
-import ru.skillbranch.sbdelivery.aop.doMoreClean
 import ru.skillbranch.sbdelivery.screens.cart.logic.CartFeature
 import ru.skillbranch.sbdelivery.screens.dish.logic.DishFeature
 
 fun RootState.reduceNavigate(msg: NavigateCommand): Pair<RootState, Set<Eff>> {
-    Log.v(LogAspect.tag, ">>>--------RootState.reduceNavigate")
     // t.c. 01:56:30 если текущий экран (с которого уходим) является
     // экраном "dish", то в сет закидываем эффект терминации корутин,
     // выполняющихся на экране в момент, когда мы уходим с экрана.
@@ -92,11 +89,5 @@ fun RootState.reduceNavigate(msg: NavigateCommand): Pair<RootState, Set<Eff>> {
     // Прежде чем вернуть пару из reduceNavigate() докидываем
     // в сет (во второй элемент пары) элементы из сета navEffs
     }.run { first to second.plus(navEffs) }
-
-    val msgV = "$msg".doMoreClean()
-    val pairF = "${pair.first}".doMoreClean()
-    val pairS = "${pair.second}".doMoreClean()
-    Log.v(LogAspect.tag,  "Params(reduceNavigate): [msg = $msgV]| Return Value: pairF => $pairF *** pairS => $pairS")
-    Log.v(LogAspect.tag, "<<<--------RootState.reduceNavigate")
     return pair
 }

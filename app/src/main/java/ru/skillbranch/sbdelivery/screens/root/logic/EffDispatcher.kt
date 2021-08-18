@@ -3,7 +3,6 @@ package ru.skillbranch.sbdelivery.screens.root.logic
 import android.util.Log
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
-import ru.skillbranch.sbdelivery.aop.LogClassMethods
 import ru.skillbranch.sbdelivery.repository.RootRepository
 import ru.skillbranch.sbdelivery.screens.cart.logic.CartEffectHandler
 import ru.skillbranch.sbdelivery.screens.dish.logic.DishEffectHandler

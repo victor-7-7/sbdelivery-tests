@@ -2,7 +2,6 @@ package ru.skillbranch.sbdelivery.screens.dish.logic
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import ru.skillbranch.sbdelivery.aop.LogClassMethods
 import ru.skillbranch.sbdelivery.repository.DishRepository
 import ru.skillbranch.sbdelivery.screens.root.logic.Eff
 import ru.skillbranch.sbdelivery.screens.root.logic.IEffectHandler

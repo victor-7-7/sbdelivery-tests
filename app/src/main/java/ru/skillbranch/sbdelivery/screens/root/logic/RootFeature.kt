@@ -5,7 +5,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ru.skillbranch.sbdelivery.aop.LogClassMethods
 import ru.skillbranch.sbdelivery.screens.cart.logic.CartFeature
 import ru.skillbranch.sbdelivery.screens.cart.logic.reduce
 import ru.skillbranch.sbdelivery.screens.dish.logic.DishFeature

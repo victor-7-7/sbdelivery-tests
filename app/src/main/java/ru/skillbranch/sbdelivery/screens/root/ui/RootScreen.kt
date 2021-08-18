@@ -24,14 +24,11 @@ import ru.skillbranch.sbdelivery.screens.root.logic.Eff
 import ru.skillbranch.sbdelivery.screens.root.logic.Msg
 import ru.skillbranch.sbdelivery.screens.root.logic.ScreenState
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
-import ru.skillbranch.sbdelivery.aop.LogAspect
-import ru.skillbranch.sbdelivery.aop.doMoreClean
 
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 @Composable
 fun RootScreen(vm: RootViewModel) {
-    Log.w(LogAspect.tag, ">>>--------RootScreen() Params: [vm = RootViewModel]")
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
@@ -47,14 +44,12 @@ fun RootScreen(vm: RootViewModel) {
         topBar = { AppbarHost(vm) },
         content = { ContentHost(vm) }
     )
-    Log.w(LogAspect.tag, "<<<--------RootScreen()")
 }
 
 @ExperimentalComposeUiApi
 @ExperimentalFoundationApi
 @Composable
 fun ContentHost(vm: RootViewModel) {
-    Log.w(LogAspect.tag, ">>>--------ContentHost() Params: [vm = RootViewModel]")
     // collectAsState => Collects values from this StateFlow and represents its
     // latest value via State. The StateFlow.value is used as an initial value.
     // Every time there would be new value posted into the StateFlow the returned
@@ -82,7 +77,6 @@ fun ContentHost(vm: RootViewModel) {
             is ScreenState.Cart -> CartScreen(currScrSt.cartState) { vm.accept(Msg.Cart(it)) }
         }
     }
-    Log.w(LogAspect.tag, "<<<--------ContentHost()")
 }
 
 @Composable
@@ -91,7 +85,7 @@ fun Navigation(
     modifier: Modifier = Modifier,
     content: @Composable (ScreenState) -> Unit
 ){
-    Log.w(LogAspect.tag, ">>>--------Navigation() Params: [currScrSt = $currScrSt]".doMoreClean())
+
     // t.c. 02:17:00 как бы "локальная" переменная функции. На самом деле
     // ее значение будет восстановлено при вызове функции в то значение,
     // которое она имела при предыдущем вызове функции
@@ -109,13 +103,12 @@ fun Navigation(
             content(currScrSt)
         }
     }
-    Log.w(LogAspect.tag, "<<<--------Navigation()")
+
 }
 
 @ExperimentalComposeUiApi
 @Composable
 fun AppbarHost(vm: RootViewModel) {
-    Log.w(LogAspect.tag, ">>>--------AppbarHost() Params: [vm = RootViewModel]")
     // collectAsState => Collects values from this StateFlow and represents its
     // latest value via State. The StateFlow.value is used as an initial value.
     // Every time there would be new value posted into the StateFlow the returned
@@ -130,7 +123,7 @@ fun AppbarHost(vm: RootViewModel) {
         )
         else -> DefaultToolbar(title = screen.title, cartCount = state.cartCount, navigate =  vm::navigate  )
     }
-    Log.w(LogAspect.tag, "<<<--------AppbarHost()")
+
 }
 
 private suspend fun renderNotification(
@@ -138,18 +131,15 @@ private suspend fun renderNotification(
     scaffoldState: ScaffoldState,
     accept: (Msg) -> Unit
 ) {
-    Log.w(LogAspect.tag, ">>>--------RootScreen.renderNotification()")
     // В компоузе метод showSnackbar показывает бар и затем возвращает результат
     // SnackbarResult.Dismissed (если истек таймаут или юзер смахнул снэкбар)
     // или SnackbarResult.ActionPerformed (если юзер тапнул кнопку экшн)
     val result = when(notification){
         is Eff.Notification.Text -> {
-            Log.w(LogAspect.tag, "Show Text Notification. Snackbar: [message = ${notification.message}]")
             scaffoldState.snackbarHostState.showSnackbar(notification.message)
         }
         is Eff.Notification.Action -> {
             val (message, label) = notification
-            Log.w(LogAspect.tag, "Show Action Notification. Snackbar: [message = $message] [actionLabel = $label]")
             scaffoldState.snackbarHostState.showSnackbar(message, label)
         }
         is Eff.Notification.Error -> {
@@ -163,7 +153,6 @@ private suspend fun renderNotification(
         SnackbarResult.ActionPerformed -> {
             when(notification){
                 is Eff.Notification.Action -> {
-                    Log.w(LogAspect.tag, "Action Notification Result: accept [action = ${notification.action}]")
                     accept(notification.action)
                 }
                 is Eff.Notification.Error -> notification.action?.let { accept(it) }
@@ -171,5 +160,5 @@ private suspend fun renderNotification(
             }
         }
     }
-    Log.w(LogAspect.tag, "<<<--------RootScreen.renderNotification()")
+
 }

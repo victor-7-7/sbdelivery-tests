@@ -13,14 +13,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.skillbranch.sbdelivery.aop.LogAspect
 import ru.skillbranch.sbdelivery.screens.cart.logic.CartFeature
 import ru.skillbranch.sbdelivery.screens.cart.data.CartUiState
 import ru.skillbranch.sbdelivery.screens.cart.data.ConfirmDialogState
 
 @Composable
 fun CartScreen(state: CartFeature.State, accept: (CartFeature.Msg) -> Unit) {
-    Log.w(LogAspect.tag, ">>>--------CartScreen() Params: [state = $state]")
     when (state.list) {
         is CartUiState.Value -> {
             Column {
@@ -42,7 +40,6 @@ fun CartScreen(state: CartFeature.State, accept: (CartFeature.Msg) -> Unit) {
                                     accept(CartFeature.Msg.DecrementCount(dishId))
                                 },
                                 onRemove = { dishId, title ->
-                                    Log.w(LogAspect.tag, "CartListItem.onRemove() click")
                                     // Предлагаем юзеру подтвердить удаление из корзины
                                     accept(CartFeature.Msg.ShowConfirm(dishId, title))
                                 }
@@ -115,7 +112,6 @@ fun CartScreen(state: CartFeature.State, accept: (CartFeature.Msg) -> Unit) {
     }
 
     if (state.confirmDialog is ConfirmDialogState.Show) {
-        Log.w(LogAspect.tag, ">>>--------Show Alert Dialog: [dishId = ${state.confirmDialog.id}] [dishTitle = ${state.confirmDialog.title}]")
         AlertDialog(
             // onDismissRequest -> Executes when the user tries to dismiss the Dialog
             // by clicking outside or pressing the back button. This is not called
@@ -147,5 +143,4 @@ fun CartScreen(state: CartFeature.State, accept: (CartFeature.Msg) -> Unit) {
             }
         )
     }
-    Log.w(LogAspect.tag, "<<<--------CartScreen()")
 }

@@ -1,6 +1,6 @@
 package ru.skillbranch.sbdelivery.repository
 
-import ru.skillbranch.sbdelivery.aop.LogClassMethods
+
 import ru.skillbranch.sbdelivery.data.db.dao.CartDao
 import javax.inject.Inject
 

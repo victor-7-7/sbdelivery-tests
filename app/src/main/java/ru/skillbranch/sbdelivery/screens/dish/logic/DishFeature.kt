@@ -1,6 +1,6 @@
 package ru.skillbranch.sbdelivery.screens.dish.logic
 
-import ru.skillbranch.sbdelivery.aop.LogClassMethods
+
 import ru.skillbranch.sbdelivery.data.network.res.ReviewRes
 import ru.skillbranch.sbdelivery.screens.dish.data.DishContent
 import ru.skillbranch.sbdelivery.screens.dish.data.DishUiState
