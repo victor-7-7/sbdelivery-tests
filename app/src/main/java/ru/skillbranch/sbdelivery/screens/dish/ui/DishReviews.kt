@@ -41,6 +41,26 @@ fun DishReviews(reviews: ReviewUiState, rating: Float, accept: (DishFeature.Msg)
                 .fillMaxWidth()
         )
 
+        is ReviewUiState.ValueWithLoading -> Box(contentAlignment = Alignment.Center) {
+            Reviews(
+                reviews = reviews.list,
+                rating = rating,
+                onAddReview = { accept(DishFeature.Msg.ShowReviewDialog) },
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                    color = MaterialTheme.colors.secondary
+                )
+            }
+        }
+
         ReviewUiState.Empty -> Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.height(112.dp)

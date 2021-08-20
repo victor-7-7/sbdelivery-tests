@@ -41,6 +41,7 @@ class DishRepository @Inject constructor(
         }
     }
 
+    // Общее количество всех блюд в корзине юзера
     override suspend fun cartCount(): Int = cartDao.cartCount() ?: 0
 
     override suspend fun loadReviews(dishId: String): List<ReviewRes> {

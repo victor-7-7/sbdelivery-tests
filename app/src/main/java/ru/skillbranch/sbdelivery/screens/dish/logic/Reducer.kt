@@ -8,13 +8,18 @@ import ru.skillbranch.sbdelivery.screens.root.logic.ScreenState
 
 fun DishFeature.State.selfReduce(msg: DishFeature.Msg) : Pair<DishFeature.State, Set<Eff>> {
     val pair = when (msg) {
-        // Здесь msg.count - количество штук блюда, добавляемых в корзину за раз
-        is DishFeature.Msg.AddToCart -> this to setOf(DishFeature.Eff.AddToCart(msg.id, msg.count)).toEffs()
+        // Здесь msg.count - количество штук блюда, добавляемых в корзину за раз. При этом мы
+        // в стейте сбрасываем свойство count (цифру в степпере) к 1
+        is DishFeature.Msg.AddToCart -> copy(count = 1) to setOf(DishFeature.Eff.AddToCart(msg.id, msg.count)).toEffs()
         is DishFeature.Msg.DecrementCount -> copy(count = count - 1) to emptySet<Eff>()
         is DishFeature.Msg.HideReviewDialog -> copy(isReviewDialog = false) to emptySet<Eff>()
         is DishFeature.Msg.IncrementCount -> copy(count = count + 1) to emptySet<Eff>()
-        is DishFeature.Msg.SendReview -> copy(isReviewDialog = false) to
-                setOf(DishFeature.Eff.SendReview(msg.dishId, msg.rating, msg.review)).toEffs()
+        is DishFeature.Msg.SendReview -> {
+            val reviewList = if (reviews is ReviewUiState.Empty) emptyList()
+            else (reviews as ReviewUiState.Value).list
+            copy(isReviewDialog = false, reviews = ReviewUiState.ValueWithLoading(reviewList)) to
+                    setOf(DishFeature.Eff.SendReview(msg.dishId, msg.rating, msg.review, reviewList)).toEffs()
+        }
         is DishFeature.Msg.ShowDish -> copy(content = DishUiState.Value(msg.dish)) to emptySet<Eff>()
         is DishFeature.Msg.ShowReviewDialog -> copy(isReviewDialog = true) to emptySet<Eff>()
         is DishFeature.Msg.ShowReviews -> copy(reviews = ReviewUiState.Value(msg.reviews)) to emptySet<Eff>()
