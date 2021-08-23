@@ -21,8 +21,8 @@ class CartEffectHandler @Inject constructor(
         suspend fun updateCart(){
             val items = repository.loadItems()
             val count = items.sumOf { it.count }
-            commit(Msg.UpdateCartCount(count))
             commit(CartFeature.Msg.ShowCart(items).toMsg())
+            commit(Msg.UpdateCartCount(count))
         }
 
         when(effect){
@@ -42,8 +42,10 @@ class CartEffectHandler @Inject constructor(
                 // Юзер уже подтвердил удаление товара из корзины
                 repository.removeItem(effect.id)
                 updateCart()
+            /*
                 // Это помимо заданий, мое добавление
                 notifyChannel.send(Eff.Notification.Text("${effect.title} удален из корзины"))
+                */
             }
             is CartFeature.Eff.SendOrder -> {
                 repository.clearCart()

@@ -8,7 +8,6 @@ import ru.skillbranch.sbdelivery.screens.root.logic.IEffectHandler
 import ru.skillbranch.sbdelivery.screens.root.logic.Msg
 import javax.inject.Inject
 
-
 class DishEffectHandler @Inject constructor(
     private val repository: DishRepository,
     private val notifyChannel: Channel<Eff.Notification>,

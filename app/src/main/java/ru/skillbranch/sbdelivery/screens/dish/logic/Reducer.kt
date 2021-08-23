@@ -11,7 +11,14 @@ fun DishFeature.State.selfReduce(msg: DishFeature.Msg) : Pair<DishFeature.State,
         // Здесь msg.count - количество штук блюда, добавляемых в корзину за раз. При этом мы
         // в стейте сбрасываем свойство count (цифру в степпере) к 1
         is DishFeature.Msg.AddToCart -> copy(count = 1) to setOf(DishFeature.Eff.AddToCart(msg.id, msg.count)).toEffs()
-        is DishFeature.Msg.DecrementCount -> copy(count = count - 1) to emptySet<Eff>()
+        // На странице товара невозможно сбросить степпер до 0 (поскольку кнопка "минус"
+        // исчезает, когда степпер = 1). Но для прохождения теста increment_decrement_count()
+        // реализую эту логику
+        is DishFeature.Msg.DecrementCount -> {
+            var temp = count - 1
+            if (temp == 0) temp = 1
+            copy(count = temp) to emptySet<Eff>()
+        }
         is DishFeature.Msg.HideReviewDialog -> copy(isReviewDialog = false) to emptySet<Eff>()
         is DishFeature.Msg.IncrementCount -> copy(count = count + 1) to emptySet<Eff>()
         is DishFeature.Msg.SendReview -> {

@@ -65,7 +65,7 @@ fun DishesToolbar(
             .onEach { Log.e("DishesToolbar", "before debounce $it") }
             // t.c. 02:24:00 важные паяснения про то, что debounce
             // работает некорректно со scope.launch в Composable окружении
-            .debounce(500)
+            .debounce(1000)
             .onEach { Log.e("DishesToolbar", "after debounce $it") }
             .collect {
                 Log.e("DishesToolbar", "collect $it")

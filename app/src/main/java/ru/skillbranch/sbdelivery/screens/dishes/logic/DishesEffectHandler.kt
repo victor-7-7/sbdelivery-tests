@@ -3,7 +3,6 @@ package ru.skillbranch.sbdelivery.screens.dishes.logic
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import ru.skillbranch.sbdelivery.repository.DishesRepository
 import ru.skillbranch.sbdelivery.screens.root.logic.Eff
 import ru.skillbranch.sbdelivery.screens.root.logic.IEffectHandler
@@ -38,7 +37,7 @@ class DishesEffectHandler @Inject constructor(
             }
 
             is DishesFeature.Eff.RemoveFromCard -> {
-                repository.decrementOrRemoveDishFromCart(effect.id)
+                repository.removeDishFromCart(effect.id)
                 val count = repository.cartCount()
                 commit(Msg.UpdateCartCount(count))
                 notifyChannel.send(Eff.Notification.Text("${effect.title} удален из корзины"))
@@ -57,7 +56,6 @@ class DishesEffectHandler @Inject constructor(
 
 
             is DishesFeature.Eff.SearchDishes -> {
-                delay(3000)
                 commit(DishesFeature.Msg.ShowLoading.toMsg())
                 val dishes = repository.searchDishes(effect.query)
                 commit(DishesFeature.Msg.ShowDishes(dishes).toMsg())
