@@ -9,6 +9,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import ru.skillbranch.sbdelivery.screens.root.RootViewModel
 import ru.skillbranch.sbdelivery.screens.root.logic.Command
 import ru.skillbranch.sbdelivery.screens.root.logic.NavigateCommand
 import ru.skillbranch.sbdelivery.screens.root.ui.AppTheme

@@ -60,6 +60,3 @@ class EffDispatcher @Inject constructor(
 }
 
 
-interface IEffectHandler<E, M> {
-    suspend fun handle(effect: E, commit: (M) -> Unit)
-}

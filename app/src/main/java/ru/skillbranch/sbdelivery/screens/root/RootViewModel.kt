@@ -1,4 +1,4 @@
-package ru.skillbranch.sbdelivery
+package ru.skillbranch.sbdelivery.screens.root
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
@@ -19,20 +19,20 @@ class RootViewModel @Inject constructor(
         // При запуске приложения метод get вернет null
         val initState = savedState.get<RootState>("rootState")
         Log.e("RootViewModel", "initState")
-        feature.listen(viewModelScope, dispatcher, initState)
+        RootFeature.listen(viewModelScope, dispatcher, initState)
     }
 
     fun accept(msg: Msg){
-        feature.mutate(msg)
+        RootFeature.mutate(msg)
     }
 
     fun navigate(cmd: NavigateCommand){
-        feature.mutate(Msg.Navigate(cmd))
+        RootFeature.mutate(Msg.Navigate(cmd))
     }
 
     fun saveState() {
-        Log.e("RootViewModel", "save State: ${feature.state.value}")
-        savedState["rootState"] = feature.state.value
+        Log.e("RootViewModel", "save State: ${RootFeature.state.value}")
+        savedState["rootState"] = RootFeature.state.value
     }
 
 }
