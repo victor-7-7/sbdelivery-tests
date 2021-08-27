@@ -8,15 +8,15 @@ import ru.skillbranch.sbdelivery.screens.root.logic.ScreenState
 
 fun DishesFeature.State.selfReduce(msg: DishesFeature.Msg): Pair<DishesFeature.State, Set<Eff>> {
     val pair = when (msg) {
-        is DishesFeature.Msg.AddToCard -> this to setOf(
-            DishesFeature.Eff.AddToCard(
+        is DishesFeature.Msg.AddToCart -> this to setOf(
+            DishesFeature.Eff.AddToCart(
                 msg.id,
                 msg.title
             )
         ).toEffs()
 
-        is DishesFeature.Msg.RemoveFromCard -> this to setOf(
-            DishesFeature.Eff.RemoveFromCard(
+        is DishesFeature.Msg.RemoveFromCart -> this to setOf(
+            DishesFeature.Eff.RemoveFromCart(
                 msg.id,
                 msg.title
             )

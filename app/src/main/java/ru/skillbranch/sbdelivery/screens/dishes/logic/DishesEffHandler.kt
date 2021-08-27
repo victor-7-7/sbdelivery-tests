@@ -18,7 +18,7 @@ class DishesEffHandler @Inject constructor(
 
     override suspend fun handle(effect: DishesFeature.Eff, commit: (Msg) -> Unit) {
         when (effect) {
-            is DishesFeature.Eff.AddToCard -> {
+            is DishesFeature.Eff.AddToCart -> {
                 repository.addDishToCart(effect.id)
                 val count = repository.cartCount()
                 commit(Msg.UpdateCartCount(count))
@@ -27,7 +27,7 @@ class DishesEffHandler @Inject constructor(
                         message = "${effect.title} успешно добавлен в корзину",
                         label = "Отмена",
                         action = Msg.Dishes(
-                            DishesFeature.Msg.RemoveFromCard(
+                            DishesFeature.Msg.RemoveFromCart(
                                 effect.id,
                                 effect.title
                             )
@@ -36,7 +36,7 @@ class DishesEffHandler @Inject constructor(
                 )
             }
 
-            is DishesFeature.Eff.RemoveFromCard -> {
+            is DishesFeature.Eff.RemoveFromCart -> {
                 repository.removeDishFromCart(effect.id)
                 val count = repository.cartCount()
                 commit(Msg.UpdateCartCount(count))

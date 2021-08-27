@@ -1,6 +1,5 @@
 package ru.skillbranch.sbdelivery.screens.dishes.ui
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
@@ -47,7 +46,7 @@ fun DishesScreen(state: DishesFeature.State, accept: (DishesFeature.Msg) -> Unit
             DishItem(
                 dish = it,
                 onClick = { dish -> accept(DishesFeature.Msg.ClickDish(dish.id, dish.title)) },
-                addToCart = { dish -> accept(DishesFeature.Msg.AddToCard(dish.id, dish.title)) }
+                addToCart = { dish -> accept(DishesFeature.Msg.AddToCart(dish.id, dish.title)) }
             )
         }
     }
