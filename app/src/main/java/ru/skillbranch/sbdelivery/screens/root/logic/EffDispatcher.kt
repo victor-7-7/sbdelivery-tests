@@ -4,16 +4,16 @@ import android.util.Log
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import ru.skillbranch.sbdelivery.repository.RootRepository
-import ru.skillbranch.sbdelivery.screens.cart.logic.CartEffectHandler
-import ru.skillbranch.sbdelivery.screens.dish.logic.DishEffectHandler
-import ru.skillbranch.sbdelivery.screens.dishes.logic.DishesEffectHandler
+import ru.skillbranch.sbdelivery.screens.cart.logic.CartEffHandler
+import ru.skillbranch.sbdelivery.screens.dish.logic.DishEffHandler
+import ru.skillbranch.sbdelivery.screens.dishes.logic.DishesEffHandler
 import javax.inject.Inject
 
 
 class EffDispatcher @Inject constructor(
-    private val dishesHandler: DishesEffectHandler,
-    private val dishHandler: DishEffectHandler,
-    private val cartHandler: CartEffectHandler,
+    private val dishesHandler: DishesEffHandler,
+    private val dishHandler: DishEffHandler,
+    private val cartHandler: CartEffHandler,
 
     private val rootRepository : RootRepository,
 
