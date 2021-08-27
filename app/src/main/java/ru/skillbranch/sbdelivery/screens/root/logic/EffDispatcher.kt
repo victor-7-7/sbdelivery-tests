@@ -20,7 +20,6 @@ class EffDispatcher @Inject constructor(
     //Channels for ui (ui effects) and android command
     private val _notifyChannel: Channel<Eff.Notification>,
     private val _commandChannel: Channel<Command>
-
 ) : IEffectHandler<Eff, Msg> {
     // fan-out => развёртываться как веер
     // receiveAsFlow -> Represents the given receive channel as a hot flow and

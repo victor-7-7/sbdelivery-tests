@@ -9,7 +9,7 @@ import androidx.compose.material.SnackbarResult
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import ru.skillbranch.sbdelivery.screens.root.RootViewModel
+import ru.skillbranch.sbdelivery.RootViewModel
 import ru.skillbranch.sbdelivery.screens.root.logic.RootState
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi

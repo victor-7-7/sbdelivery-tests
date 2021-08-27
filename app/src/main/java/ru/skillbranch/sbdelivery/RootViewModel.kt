@@ -1,4 +1,4 @@
-package ru.skillbranch.sbdelivery.screens.root
+package ru.skillbranch.sbdelivery
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
